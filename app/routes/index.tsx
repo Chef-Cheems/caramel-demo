@@ -1,8 +1,20 @@
 import { useLoaderData } from 'remix';
 import { useRevalidate } from 'remix-utils';
 import useSWR from 'swr';
-import { getFarms, Farm } from '~/caramel';
+import { getFarms } from '~/caramel';
 import { styled } from '~/stitches.config';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  SelectViewport,
+  SelectItemIndicator,
+  SelectItemText,
+} from '~/components/select';
+import { useState } from 'react';
+import orderBy from 'lodash/orderBy';
 
 const StyledFarmList = styled('ul', {});
 
@@ -25,17 +37,38 @@ export default function Index() {
     refreshInterval: 1000,
   });
 
+  const [select, setSelect] = useState('default');
+
   return (
     <div>
+      <Select value={select} onValueChange={setSelect}>
+        <SelectTrigger aria-label="Food">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectViewport>
+            <SelectItem value="default">
+              <SelectItemText>default</SelectItemText>
+              <SelectItemIndicator>-</SelectItemIndicator>
+            </SelectItem>
+            <SelectItem value="pid">
+              <SelectItemText>pid</SelectItemText>
+              <SelectItemIndicator>-</SelectItemIndicator>
+            </SelectItem>
+          </SelectViewport>
+        </SelectContent>
+      </Select>
       <StyledFarmList>
-        {loaderData?.map((farm) => {
-          return (
-            <li key={farm.pid}>
-              {farm.pid} - {farm.lpSymbol} - {farm.lpAddress} -{' '}
-              {farm.poolWeight}
-            </li>
-          );
-        })}
+        {orderBy(loaderData, select === 'default' ? [] : select)?.map(
+          (farm) => {
+            return (
+              <li key={farm.pid}>
+                {farm.pid} - {farm.lpSymbol} - {farm.lpAddress} -{' '}
+                {farm.poolWeight}
+              </li>
+            );
+          },
+        )}
       </StyledFarmList>
     </div>
   );
