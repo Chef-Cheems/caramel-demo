@@ -41,6 +41,7 @@ export default function Index() {
 
   return (
     <div>
+      Sort By
       <Select value={select} onValueChange={setSelect}>
         <SelectTrigger aria-label="Food">
           <SelectValue />
