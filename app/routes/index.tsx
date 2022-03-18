@@ -96,12 +96,14 @@ export default function Index() {
 
   const [select, setSelect] = useState('default');
 
+  const [shouldFilterActive, setShouldFilterActive] = useState(false);
+
   return (
     <TooltipProvider>
       <div>
         Sort By
         <Select value={select} onValueChange={setSelect}>
-          <SelectTrigger aria-label="Food">
+          <SelectTrigger aria-label="SortBy">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -117,18 +119,30 @@ export default function Index() {
             </SelectViewport>
           </SelectContent>
         </Select>
+        <label>
+          <input
+            checked={shouldFilterActive}
+            onChange={(e) => setShouldFilterActive(e.target.checked)}
+            type="checkbox"
+          />
+          Active only
+        </label>
         <Flex>
           <StyledFarmList>
-            {orderBy(farms, select === 'default' ? [] : select)?.map(
-              (farm) => {
+            {orderBy(farms, select === 'default' ? [] : select)
+              ?.filter((f) =>
+                shouldFilterActive
+                  ? parseFloat(f.poolWeight) > 0
+                  : true,
+              )
+              .map((farm) => {
                 return (
                   <li key={farm.pid} id={String(farm.pid)}>
                     {farm.pid} - {farm.lpSymbol} - {farm.lpAddress} -{' '}
                     {farm.poolWeight}
                   </li>
                 );
-              },
-            )}
+              })}
           </StyledFarmList>
           <StatusWrapper>
             {Array.from({ length: poolLength }).map((_, i) => {
