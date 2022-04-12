@@ -1,4 +1,4 @@
-const API = 'https://caramel.pancakeswap.com/v1';
+const API = 'https://caramel.pancakeswap.com/mcv1';
 
 export interface Farm {
   pid: number;
