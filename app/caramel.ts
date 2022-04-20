@@ -1,4 +1,5 @@
-const API = 'https://caramel.pancakeswap.com/mcv1';
+// const API = "https://caramel.pancakeswap.com";
+const API = "http://localhost:3000";
 
 export interface Farm {
   pid: number;
@@ -26,7 +27,17 @@ export interface Token {
   decimals: number;
 }
 
-export async function getFarms() {
-  const res = await fetch(`${API}/farms?filter=all`);
+export async function getFarmsv1() {
+  const res = await fetch(`${API}/mcv1/farms?filter=all`);
   return (await res.json()) as Farm[];
+}
+
+export async function getFarmsv2() {
+  const res = await fetch(`${API}/mcv2/farms?filter=all`);
+  return (await res.json()) as Farm[];
+}
+
+export async function getHealth() {
+  const res = await fetch(`${API}/health`);
+  return await res.json();
 }
