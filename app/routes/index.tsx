@@ -108,7 +108,7 @@ export default function Index() {
   let revalidate = useRevalidate();
 
   useSWR("index", () => revalidate(), {
-    refreshInterval: 1000,
+    refreshInterval: 30000,
   });
 
   const [select, setSelect] = useState("default");
