@@ -1,5 +1,5 @@
-// const API = "https://caramel.pancakeswap.com";
-const API = "http://localhost:3000";
+const API = "https://caramel.pancakeswap.com";
+// const API = "http://localhost:3000";
 
 export interface Farm {
   pid: number;
